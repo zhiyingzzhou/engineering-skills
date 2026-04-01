@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Responsive Layout"
+  short_description: "Fix breakpoints, sizing, overflow, media, and touch layout"
+  default_prompt: "Use $frontend-responsive-layout to inspect the current page or component layout, then fix breakpoints, sizing constraints, overflow, responsive media, and touch behavior."

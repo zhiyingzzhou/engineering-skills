@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Performance"
+  short_description: "Measure and improve Web Vitals, assets, and budgets"
+  default_prompt: "Use $frontend-performance to inspect the current frontend app, measure the relevant route or interaction, and improve Web Vitals, asset loading, code splitting, and performance budgets."
