@@ -1,24 +1,33 @@
 # ARIA And Patterns
 
-本页规则以 WAI-ARIA Authoring Practices Guide 为基线。
+Use this reference only when native HTML cannot express the needed behavior or when reviewing an existing ARIA/custom widget.
 
-## 使用边界
+## ARIA Boundary
 
-- 原生语义够用时，不要追加多余 `role`
-- `aria-label`、`aria-labelledby`、`aria-describedby` 只解决命名和说明问题
-- `aria-expanded`、`aria-selected`、`aria-pressed` 等状态必须反映真实 UI 状态
-- 不要让 `role` 与元素的真实行为互相矛盾
+- Follow the APG principle: no ARIA is better than bad ARIA.
+- ARIA changes semantics only; it does not add keyboard behavior, pointer behavior, focus management, form submission, or validation.
+- Do not create role/state contradictions, such as a `div role="button"` that lacks button keyboard behavior.
+- Keep `aria-expanded`, `aria-selected`, `aria-pressed`, `aria-current`, `aria-invalid`, `aria-busy`, and `aria-disabled` synchronized with real UI behavior.
+- Use `aria-label`, `aria-labelledby`, and `aria-describedby` for names and descriptions, not to compensate for unclear UX.
 
-## 复杂模式
+## Pattern Checks
 
-- `dialog`：需要清晰标题、焦点管理和关闭路径
-- `tablist`：需要可感知的激活项和方向键移动
-- `menu` / `listbox`：只在真正的应用式复合控件中使用
-- `accordion`：触发按钮应暴露展开状态和关联区域
+- `dialog`: name the dialog, move focus inside, contain focus for modal dialogs, provide a close path, restore focus after close, and avoid background interaction.
+- `tabs`: expose `tablist`, `tab`, `tabpanel`, selected state, panel association, and arrow-key movement. Use automatic activation only when panels display without noticeable latency.
+- `menu`: use only for application-style command menus, not ordinary site navigation. Support arrow keys, Escape, disabled items, and focus return.
+- `listbox`: expose active option, selected option, multi-select rules, typeahead expectations, and scroll visibility.
+- `combobox`: keep input value, expanded state, popup ownership, active descendant or roving focus, filtering, Escape, and commit behavior consistent.
+- `accordion` / disclosure: use buttons, expose expanded state, associate the controlled region when useful, and keep collapsed content out of the tab path.
 
-## 常见误用
+## Live Regions And Dynamic State
 
-- 用 `role="button"` 替代原生 `button`
-- 给静态内容乱加 `aria-hidden="true"`
-- 用 live region 持续广播所有状态变化
-- 只改视觉选中样式，不同步可访问状态
+- Use live regions for important asynchronous feedback that does not receive focus.
+- Do not broadcast every minor state change.
+- Prefer a concise status region for background save, loading completion, or non-blocking errors.
+- For blocking validation, focus an error summary or first invalid field instead of relying only on live regions.
+
+## Verification
+
+- Confirm role, name, state, and keyboard behavior together.
+- Compare default, hover, focus, active, selected, expanded, disabled, loading, and error states.
+- If mobile/touch assistive technology was not checked, record the gap.

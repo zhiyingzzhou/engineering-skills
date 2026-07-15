@@ -1,23 +1,29 @@
 # Measurement
 
-本页规则以 web.dev Web Vitals 建议为基线。
+Use this reference before diagnosing or changing performance behavior.
 
-## 先分类型
+## Data Priority
 
-- 加载性能：LCP、首屏可见内容、关键资源发现时间
-- 交互性能：INP、长任务、同步事件处理
-- 稳定性：CLS、布局位移来源
+- Field data: use RUM or CrUX-like data to decide user impact and priority when available.
+- Lab data: use Lighthouse, WebPageTest, Playwright traces, browser profiles, or local measurements to reproduce and isolate causes.
+- Subjective reports: convert to a route, interaction, device class, network, and reproduction path before editing.
 
-## 基线要求
+## Web Vitals Baseline
 
-- 改动前先记录设备、网络、页面和复现步骤
-- 优先看字段数据；没有字段数据时再补实验室数据
-- 同一轮对比使用相近条件，不要混用多种测试前提
+- Evaluate Core Web Vitals using the 75th percentile where field data is available.
+- Segment mobile and desktop instead of averaging them together.
+- Typical good thresholds: LCP <= 2.5s, INP <= 200ms, CLS <= 0.1.
+- Treat thresholds as triage guidance, not a substitute for product-specific user impact.
 
-## 经验阈值
+## Record Before And After
 
-- LCP 目标通常不高于 2.5 秒
-- INP 目标通常不高于 200 毫秒
-- CLS 目标通常不高于 0.1
+- Route, URL, user state, build mode, browser, viewport, device class, CPU/network throttling, cache state, and test location.
+- Data source, sample window, percentile, and whether the result is field, lab, or local-only.
+- Baseline, change, and confidence.
 
-这些阈值用于优先级判断，不替代具体业务场景分析。
+## Tool Fit
+
+- Use browser Performance panel or traces for long tasks, rendering, scripting, and interaction latency.
+- Use bundle analysis for JavaScript cost and dependency shifts.
+- Use network waterfalls for critical resource discovery and priority.
+- Use monitoring or CI budgets for regression protection.

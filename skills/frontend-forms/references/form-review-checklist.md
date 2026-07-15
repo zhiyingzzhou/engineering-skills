@@ -1,21 +1,24 @@
 # Form Review Checklist
 
-## 开始前
+Use this reference for PR reviews, page audits, and release-risk summaries.
 
-- 列出关键字段、必填项和提交结果
-- 找到真实后端契约或接口文档
-- 确认仓库已有表单测试和页面验证命令
+## Start
 
-## 最小检查集
+- List fields, groups, required status, dependencies, and submit destination.
+- Identify client rules, server rules, normalization, and persistence.
+- Identify whether authentication, payment, address, personal data, or locale-specific formats are involved.
+- Identify available unit, DOM, E2E, browser, and manual validation commands.
 
-- 字段标签、说明、错误是否都可对应
-- 键盘提交流程是否顺畅
-- 成功、字段错误、服务端错误是否都可见
-- autofill 和密码管理器是否被破坏
-- 重复提交、加载中和恢复路径是否清晰
+## Minimum Review
 
-## 交付时必须说明
+- Labels, help, requirements, errors, and grouped controls are associated correctly.
+- Keyboard flow, submit, reset/cancel, and recovery are predictable.
+- Success, field errors, server errors, network errors, loading, and duplicate submit states are covered.
+- Autofill, password manager, OTP, address, and payment behavior are not broken where relevant.
+- Sensitive values are not exposed in logs, URLs, analytics, or unnecessary persisted state.
 
-- 校验策略怎么改了
-- 哪些错误路径已验证
-- 哪些浏览器能力或外部系统尚未验证
+## Delivery
+
+- State changed validation timing, field contracts, error behavior, autofill tokens, and privacy handling.
+- Report verified success/failure paths and unverified browser/platform paths.
+- Do not claim password-manager or autofill compatibility without a real check or explicit caveat.

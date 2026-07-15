@@ -1,22 +1,31 @@
 # DOM Testing
 
-本页规则以 Testing Library 的 Guiding Principles 为基线。
+Use this reference for Testing Library, component tests, semantic queries, user-event, and async assertions.
 
-## 查询优先级
+## Query Priority
 
-- 优先按 role 和 accessible name 查询
-- 其次按 label、文本或占位提示查询
-- 最后才考虑稳定的 `data-testid`
+- Prefer role plus accessible name for controls, headings, landmarks, and status.
+- Use label text for form fields.
+- Use visible text for content when role/name is not appropriate.
+- Use placeholder only when the placeholder is the actual user cue.
+- Use `data-testid` only for stable elements that cannot be selected semantically.
 
-## 编写原则
+## Query Types
 
-- 用接近真实用户的交互触发行为
-- 断言用户能看到、读到或操作到的结果
-- 不把内部 state、私有函数或 DOM 结构细节当主断言
-- 大型快照只能作辅助手段，不能替代行为断言
+- Use `getBy*` when the element should exist synchronously.
+- Use `queryBy*` when asserting absence.
+- Use `findBy*` when the element appears asynchronously.
+- Use `within` to scope queries to a region, dialog, table, or list.
 
-## 常见修正方向
+## Interaction And Assertions
 
-- 把脆弱的类名选择器改成语义查询
-- 把“调用了某函数”改成“界面发生了什么变化”
-- 把多场景巨型测试拆成几个小而清晰的案例
+- Use user-level interactions, such as click, type, tab, keyboard, select, upload, and pointer flows.
+- Assert visible results, accessible state, form values, error messages, focus, URL changes, or emitted user outcomes.
+- Use semantic assertions where available, such as focus, disabled, invalid, checked, visible, and text content.
+- Avoid testing private state, private functions, CSS class implementation, or DOM nesting as the main assertion.
+
+## Async Pitfalls
+
+- Await user interactions when the library requires it.
+- Wait for the UI state, not arbitrary time.
+- Avoid broad snapshots as the only assertion.

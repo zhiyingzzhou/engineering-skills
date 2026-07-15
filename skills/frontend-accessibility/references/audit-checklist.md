@@ -1,21 +1,24 @@
 # Accessibility Audit Checklist
 
-## 开始前
+Use this reference for PR reviews, page audits, and risk summaries.
 
-- 找出关键用户路径和关键交互
-- 确认仓库已有的自动化验证命令
-- 记录当前是否已有 design system 或基础可访问组件
+## Minimum Review
 
-## 最小检查集
+- Identify critical user paths, entry points, and blocking states.
+- Check headings, landmarks, labels, names, roles, states, and descriptions.
+- Check keyboard reachability, operation, focus order, visible focus, and focus recovery.
+- Check complex widgets against APG-style behavior, not just role names.
+- Check form errors, async feedback, loading, disabled, selected, expanded, and invalid states.
+- Check zoom to 200%, narrow viewport, long text, high contrast or forced colors where possible.
 
-- 标题、landmark、表单标签是否完整
-- 关键交互能否仅用键盘完成
-- 可访问名称、状态和反馈是否清晰
-- 打开/关闭/切换类交互是否有正确焦点与状态
-- 放大、缩放或窄屏时是否仍可操作
+## Severity
 
-## 交付时必须说明
+- High: unreachable task, keyboard trap, unnamed critical control, stale ARIA state, lost focus after context change, inaccessible blocking error.
+- Medium: confusing heading/landmark structure, weak focus indication, incomplete descriptions, inconsistent widget keys, unannounced important async feedback.
+- Low: redundant ARIA, minor ordering issues, verbose names, non-critical decorative noise.
 
-- 修了哪些阻塞级问题
-- 哪些复杂模式沿用了 APG
-- 哪些验证未做，以及留下的风险
+## Delivery
+
+- Report what was verified manually and automatically.
+- Report which assistive technology, browser, zoom, contrast, reduced motion, touch, or mobile checks were not performed.
+- Avoid claiming WCAG or full accessibility compliance from static review alone.

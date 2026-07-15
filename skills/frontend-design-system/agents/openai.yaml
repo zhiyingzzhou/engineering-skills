@@ -1,4 +1,4 @@
 interface:
   display_name: "Frontend Design System"
   short_description: "Model tokens, component contracts, docs, and governance"
-  default_prompt: "Use $frontend-design-system to inspect the current token and component setup, then improve design token modeling, component contracts, Storybook docs, and governance rules."
+  default_prompt: "Use $frontend-design-system to inspect the current token and component setup, then improve design-token modeling, component API contracts, Storybook-style documentation, tests, and governance."

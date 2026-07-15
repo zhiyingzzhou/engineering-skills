@@ -1,4 +1,4 @@
 interface:
   display_name: "Frontend Testing"
-  short_description: "Design resilient DOM, integration, and E2E test coverage"
-  default_prompt: "Use $frontend-testing to inspect the current frontend test stack, then add or review the right level of DOM, integration, and end-to-end coverage with stable locators and assertions."
+  short_description: "Design stable DOM, E2E, visual, and a11y tests"
+  default_prompt: "Use $frontend-testing to inspect the current frontend test stack, then add or review the right mix of unit, DOM, Storybook, accessibility, visual, and Playwright coverage with stable locators."

@@ -1,4 +1,4 @@
 interface:
   display_name: "Frontend Accessibility"
-  short_description: "Review and fix semantics, focus, keyboard, and ARIA"
-  default_prompt: "Use $frontend-accessibility to inspect the current frontend repo or page, then review or implement semantic HTML, keyboard support, focus management, and ARIA patterns."
+  short_description: "Fix semantics, keyboard, focus, ARIA, and AT gaps"
+  default_prompt: "Use $frontend-accessibility to inspect the current frontend UI, then improve semantic HTML, keyboard operation, focus management, ARIA state, and assistive-technology behavior."

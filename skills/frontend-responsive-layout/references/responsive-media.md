@@ -1,23 +1,30 @@
 # Responsive Media
 
-本页规则以 web.dev 响应式图片和布局稳定性建议为基线。
+Use this reference for images, video, iframes, charts, embeds, art direction, and layout stability.
 
-## 图片与媒体
+## Images
 
-- 图片应声明稳定尺寸信息，如宽高或等价纵横比
-- 根据显示密度和布局宽度提供合适资源
-- 内容图片优先使用真实 `img`，而不是只靠背景图
-- 首屏外媒体可延迟加载，但首屏关键内容不要误懒加载
+- Provide stable dimensions with `width`/`height`, aspect-ratio, or equivalent layout constraints.
+- Use `srcset` and `sizes` for responsive raster images.
+- Use `picture` when the crop or art direction must change by layout context.
+- Do not lazy-load likely LCP media.
+- Keep downloaded image dimensions close to displayed dimensions and density.
 
-## 审查要点
+## Media Containers
 
-- 是否使用了合适的 `srcset`、`sizes` 或等价方案
-- 嵌入视频、iframe、图表是否有比例容器或高度策略
-- 裁剪是否仍保留核心内容
-- 图片下载尺寸是否远大于显示尺寸
+- Wrap videos, iframes, maps, and charts in stable ratio or height containers.
+- Provide an overflow strategy for wide charts, tables, or diagrams.
+- Preserve the subject of cropped images at every breakpoint.
+- Separate decorative background media from content images that need alt text and intrinsic sizing.
 
-## 常见修正方向
+## Layout Stability
 
-- 为缺少尺寸的图片补齐稳定约束
-- 把装饰图和内容图分开处理
-- 让媒体随容器收缩，同时保留清晰度和布局稳定性
+- Reserve space for media before it loads.
+- Avoid late insertion above existing content unless the space is preallocated.
+- Coordinate with performance work when media changes could affect LCP or CLS.
+
+## Verification
+
+- Check narrow, medium, and wide sizes.
+- Check high-density displays when image sharpness matters.
+- Record whether media loading and LCP impact were verified.

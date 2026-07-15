@@ -1,23 +1,30 @@
 # Layout Strategy
 
-本页规则以 web.dev Responsive Web Design Basics 和 MDN 布局实践为基线。
+Use this reference for viewport breakpoints, container behavior, grid/flex layout, reading width, and content hierarchy.
 
-## 布局原则
+## Principles
 
-- 从最紧的可用空间开始思考，再向上扩展
-- 断点应围绕内容失真点，而不是设备品牌或型号
-- 优先使用 Flex、Grid、`minmax()`、`clamp()` 和相对单位
-- 如果问题只与组件容器有关，优先考虑容器级响应式方案
+- Start from the narrowest credible space and expand upward.
+- Create breakpoints where content breaks, not where a device name appears.
+- Prefer flexible constraints over fixed dimensions: `minmax()`, `clamp()`, `auto-fit`, `auto-fill`, wrapping, and intrinsic sizing.
+- Use container queries when a component's layout depends on its parent size rather than the viewport.
 
-## 设计检查
+## Container Queries
 
-- 组件是否假设了固定列数或固定宽度
-- 文字、按钮和卡片在更窄空间下是否还能保留层级
-- 列表、侧栏、工具栏是否存在自然换行或折叠策略
-- 宽屏时是否有合理的最大阅读宽度
+- Define a containment context with `container-type` before relying on `@container`.
+- Use named containers when multiple ancestors could match.
+- Use container query units only when the component should scale with the container.
+- Provide reasonable fallback behavior when container queries are unavailable or not used by the current stack.
 
-## 常见修正方向
+## Layout Review
 
-- 用自动换行或栅格重排替代硬编码断点
-- 用 `gap` 和弹性尺寸替代魔法边距
-- 用内容宽度约束提升可读性，而不是无限拉伸
+- Identify the element that causes overflow, compression, clipping, or excessive whitespace.
+- Check whether the layout assumes a fixed column count, fixed width, fixed height, or one-line text.
+- Keep readable line lengths on wide screens.
+- Preserve visual hierarchy when content wraps or collapses.
+
+## Repair Patterns
+
+- Replace magic margins with `gap` and grid/flex tracks.
+- Let toolbars, tabs, and button groups wrap or collapse deliberately.
+- Move secondary content below, into disclosure, or into a horizontal overflow region only when that matches the task.

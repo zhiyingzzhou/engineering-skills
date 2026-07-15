@@ -1,21 +1,29 @@
 # Budgets
 
-本页规则以 web.dev performance budgets 建议为基线。
+Use this reference when establishing or reviewing performance budgets and regression guards.
 
-## 预算对象
+## Budget Types
 
-- 页面级：LCP、INP、CLS、首屏渲染时长
-- 资源级：首包 JavaScript、关键图片、字体、第三方脚本
-- 构建级：单包大小、总初始加载字节数、拆分后 chunk 数量
+- Metric budgets: LCP, INP, CLS, TTFB, first render, route transition, or interaction latency.
+- Resource budgets: initial JavaScript, route chunk, CSS, image bytes, font bytes, third-party bytes.
+- Count budgets: number of blocking scripts, font files, critical requests, or third-party origins.
+- Process budgets: performance review required above a threshold.
 
-## 预算设置
+## Budget Rules
 
-- 预算必须有明确数值，不要只写“尽量小”
-- 预算应绑定到关键页面或关键能力，而不是整个站点平均值
-- 超预算时要有清晰处理动作，如阻断构建或要求 review
+- Budgets need explicit numbers and scope. Avoid "keep it small".
+- Bind budgets to critical routes, route groups, resources, or interactions.
+- Track p75 field values where possible and lab values for repeatable CI checks.
+- Use warnings for early adoption and blocking gates only when the signal is stable enough.
 
-## 落地建议
+## CI And Reporting
 
-- 优先把预算接进现有构建、分析或 CI 流程
-- 预算应随产品阶段调整，但不能无限放宽
-- 如果没有自动化预算，也要在交付中记录本轮基线
+- Prefer existing tooling: bundle analyzer, Lighthouse CI, custom size checks, WebPageTest, Playwright trace checks, or RUM dashboards.
+- Report before/after values and diff context.
+- Store budget failures with owner, expected action, and exception process.
+
+## Review Checks
+
+- Is the budget tied to the user path that matters?
+- Does the gate catch regressions without blocking unrelated changes?
+- Are third-party and media costs visible?

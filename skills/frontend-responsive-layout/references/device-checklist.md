@@ -1,21 +1,32 @@
 # Device Checklist
 
-## 开始前
+Use this reference for touch devices, orientation changes, safe areas, virtual keyboards, zoom, and input modality.
 
-- 明确问题出现的最小视口和最大视口
-- 明确是触控设备、键盘设备，还是两者兼有
-- 确认仓库是否已有截图测试、预览环境或设备模拟流程
+## Viewport Matrix
 
-## 最小检查集
+- Minimum supported narrow width.
+- Common mobile portrait and landscape.
+- Tablet or intermediate width when layout changes there.
+- Standard desktop.
+- Wide desktop where line length and max width matter.
 
-- 窄屏下无横向滚动
-- 横竖屏切换后无关键区域错位
-- 触控目标尺寸和间距足够
-- 虚拟键盘弹出后关键字段仍可见
-- 图像和嵌入内容不会把布局撑坏
+## Interaction Matrix
 
-## 交付时必须说明
+- Touch targets are large enough and not crowded.
+- Pointer and hover assumptions are guarded with media features where needed.
+- Focus states remain usable for keyboard and hybrid devices.
+- Virtual keyboard does not hide active fields, submit buttons, or blocking errors.
+- Orientation change does not leave overlays, sticky elements, or measured heights stale.
 
-- 哪些视口已验证
-- 哪些场景只做了模拟没有做真机核对
-- 是否还存在特例组件需要二次治理
+## Modern Viewport Concerns
+
+- Use safe-area insets when fixed elements touch device edges.
+- Use dynamic viewport units when browser chrome changes height.
+- Avoid fixed bottom controls that cover content or form fields.
+- Respect reduced motion when layout changes animate.
+
+## Delivery
+
+- State which sizes and input modes were tested.
+- Separate simulated device checks from real-device checks.
+- Record untested zoom, orientation, safe area, virtual keyboard, and touch scenarios.

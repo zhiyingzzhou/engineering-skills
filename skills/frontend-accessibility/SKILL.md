@@ -1,68 +1,50 @@
 ---
 name: frontend-accessibility
-description: 当你需要为前端界面实现、修复或审查可访问性时使用这个 skill。它聚焦语义化 HTML、键盘导航、focus 管理、名称与状态表达、ARIA 使用边界和复杂交互模式，不负责通用表单流程、性能优化或设计系统治理。
+description: Use this skill for frontend accessibility implementation, remediation, or review when the task involves semantic HTML, accessible names, keyboard operation, focus management, ARIA boundaries, assistive technology behavior, or complex widgets such as dialogs, tabs, menus, listboxes, comboboxes, accordions, and disclosure controls. Do not use it for general form UX, responsive layout, performance profiling, or design-system governance unless the accessibility behavior is the primary concern.
 ---
 
 # Frontend Accessibility Skill
 
-## 适用场景
+## Core Workflow
 
-这个 skill 用来处理前端可访问性相关工作，覆盖：
+1. Establish the current DOM, semantic structure, heading order, landmarks, names, roles, states, and interactive controls.
+2. Walk the keyboard path before editing: Tab, Shift+Tab, Enter, Space, Escape, arrow keys, and typeahead where the pattern expects it.
+3. Prefer native HTML. Add ARIA only when native semantics cannot express the required behavior, and keep every ARIA state synchronized with the UI.
+4. Fix blocking issues first: unreachable controls, invisible focus, unnamed controls, keyboard traps, stale state, and focus loss.
+5. Verify with the strongest available signal: real browser interaction, automated checks, accessibility snapshots, screen reader spot checks, and documented gaps.
 
-- 可访问性缺陷修复
-- 语义化 HTML 整改
-- 键盘导航与 focus 问题排查
-- 对话框、菜单、标签页等复杂交互模式审查
-- PR 或页面的无障碍 review
+## Read References By Task
 
-## 先读什么
+Always read:
 
-按下面顺序读取：
+- `references/semantic-html.md`
+- `references/focus-and-keyboard.md`
 
-1. `references/semantic-html.md`
-2. `references/focus-and-keyboard.md`
-3. `references/aria-and-patterns.md`
-4. `references/audit-checklist.md`
+Read only when relevant:
 
-这些 references 以 MDN 和 WAI-ARIA Authoring Practices Guide 为基线。
+- `references/aria-and-patterns.md` for dialogs, tabs, menus, listboxes, comboboxes, accordions, disclosure controls, and custom widgets.
+- `references/assistive-tech-matrix.md` for screen reader, browser, zoom, high contrast, reduced motion, or mobile/touch verification.
+- `references/audit-checklist.md` for PR, page, or flow reviews.
+- `references/forward-tests.md` only when validating or iterating on this skill.
 
-## 开始前确认
+## Intake
 
-- 当前任务涉及哪些页面、组件或交互模式
-- 现有实现里哪些元素承担了交互职责
-- 当前仓库真实可用的 lint、test、e2e 或手工验证命令
-- 是否已有设计系统或基础组件可复用
+- Identify the page, component, state, or user path under review.
+- Identify the existing component library or accessibility primitives before inventing a new pattern.
+- Identify available validation commands, browser automation, preview URLs, and manual test constraints.
+- Record any unverified assistive technology, zoom, high contrast, touch, or reduced motion scenarios in the final response.
 
-## 统一工作流
+## Implementation Rules
 
-### 1. 建立当前语义与交互基线
+- Use `button` for actions, `a` for navigation, and real form controls for form input.
+- Do not add `role` to change an element into something it does not behave like.
+- Do not use `aria-label` to hide unclear visible text; align visible text, accessible name, and control purpose.
+- Manage focus only when the interaction changes context, opens/closes a layer, moves within a composite widget, or reports a blocking error.
+- Keep disabled, expanded, selected, pressed, current, invalid, and busy states tied to real behavior.
+- Treat APG examples as pattern guidance, not copy-paste guarantees; adapt only after confirming keyboard and assistive technology behavior.
 
-- 先确认真实 DOM 结构、标题层级、landmark、交互元素类型
-- 再走一遍键盘路径：Tab、Shift+Tab、Enter、Space、Escape、方向键
-- 如果是复杂组件，确认是否已有可复用模式，而不是临时发明新交互
+## Delivery Requirements
 
-### 2. 再按风险高低整改
-
-- 先修真正阻塞使用的问题：无法聚焦、无法触发、状态不明、读屏无名
-- 原生语义能解决的不要改成 ARIA 组件
-- 所有 `aria-*` 状态都必须与真实行为同步
-
-### 3. 最后做回归验证
-
-- 验证键盘可达、焦点顺序、可见 focus 和状态变化
-- 验证名称、角色、状态是否对读屏软件有意义
-- 如果只能做静态审查，要明确未做的真实交互验证
-
-## 专题检查点
-
-- 语义元素优先于 `div`/`span` 拼交互
-- 可见文本、可访问名称和控件职责要一致
-- 焦点进入、移动、关闭和返回路径必须可预期
-- 复杂 widget 只在原生语义不够时才使用 APG 模式
-- 异步反馈、展开折叠、选中状态必须能被感知
-
-## 验证与交付要求
-
-- 说明本轮影响了哪些语义、角色、状态或键盘行为
-- 至少运行与改动范围匹配的真实验证命令，或完成一次键盘路径核对
-- 如果未验证读屏、放大或高对比场景，要明确写出缺口
+- State which semantics, roles, names, states, focus paths, or keyboard behaviors changed.
+- Report the validation performed and the exact gaps left untested.
+- If only static review was possible, say so and do not claim full accessibility verification.

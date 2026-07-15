@@ -1,22 +1,30 @@
 # Storybook Docs
 
-本页规则以 Storybook Writing Stories 和 Autodocs 为基线。
+Use this reference for Storybook, equivalent component docs, executable examples, accessibility checks, interaction tests, and visual review.
 
-## 文档目标
+## Documentation Goals
 
-- 让调用方看到真实组件状态，而不是只看一张截图
-- 让设计、开发、测试共享同一份组件事实
-- 让组件变化有可审查的展示面
+- Show real rendered components, not screenshots of intended behavior.
+- Keep stories aligned with the component contract and source types.
+- Make design, engineering, QA, and product review the same state matrix.
+- Treat docs as a regression surface for accessibility and visual states.
 
-## 覆盖建议
+## Story Coverage
 
-- 每个基础组件至少展示默认态和关键变体
-- 对输入类组件补齐禁用、错误、加载等状态
-- 对组合组件补齐空态、长文本和极端内容示例
-- 如果仓库使用 Autodocs，就让故事和文档由同一契约驱动
+- Every primitive should show default, key variants, disabled, loading, error, long content, and focus-visible behavior where applicable.
+- Form and input components should include labels, descriptions, errors, required/optional text, disabled/readonly, and autofill-relevant examples.
+- Overlay and composite components should include open, keyboard focus, nested content, and close behavior.
+- Components with async behavior should show loading, empty, success, and failure states.
 
-## 常见修正方向
+## Tests In Docs
 
-- 把只有 happy path 的 story 补成状态矩阵
-- 把过时 props 文档改成真实可运行示例
-- 把文档里的注意事项收敛成明确 do 和 do not
+- Use interaction tests for state changes that users trigger.
+- Use accessibility tests to catch missing names, roles, contrast issues detectable by tooling, and invalid ARIA.
+- Use visual snapshots for states where spacing, theme, density, and layout regression matter.
+- Keep test data deterministic and avoid stories that depend on production services.
+
+## Review Checks
+
+- Are docs generated from the same args/props contract consumers use?
+- Do examples include edge cases, not only happy paths?
+- Are do/don't notes tied to a visible example or failing pattern?

@@ -1,68 +1,48 @@
 ---
 name: frontend-design-system
-description: 当你需要搭建、扩展或审查前端设计系统时使用这个 skill。它聚焦 design token、组件契约、状态矩阵、文档化和治理规则，不负责单页性能优化、具体业务表单流程或端到端测试编排。
+description: Use this skill for frontend design-system work involving design token modeling, token pipelines, component API contracts, state matrices, Storybook or equivalent documentation, component governance, deprecation, migration, and reusable accessibility ownership. Do not use it for one-off page layout, form-flow UX, performance profiling, or E2E test design unless the design-system contract is the primary concern.
 ---
 
 # Frontend Design System Skill
 
-## 适用场景
+## Core Workflow
 
-这个 skill 用来处理前端设计系统相关工作，覆盖：
+1. Map the system layers before editing: source tokens, semantic tokens, component tokens, primitives, composed components, and product-specific usage.
+2. Stabilize contracts around intent, state, slots, events, and accessibility responsibilities instead of temporary visual tweaks.
+3. Document every meaningful variant and state with executable examples, not stale prose.
+4. Govern change deliberately: detect duplicates, avoid business leakage into primitives, version breaking changes, and migrate affected consumers.
+5. Validate with the strongest available checks: type tests, stories, interaction tests, accessibility checks, visual review, build, and consumer migration tests.
 
-- design token 建模与分层
-- 基础组件 API 与状态矩阵设计
-- Storybook 或等价文档体系
-- 组件库规范审查
-- 设计系统变更治理
+## Read References By Task
 
-## 先读什么
+Always read:
 
-按下面顺序读取：
+- `references/token-modeling.md`
+- `references/component-contracts.md`
 
-1. `references/token-modeling.md`
-2. `references/component-contracts.md`
-3. `references/storybook-docs.md`
-4. `references/governance.md`
+Read only when relevant:
 
-这些 references 以 Design Tokens Format Module 和 Storybook 官方文档为基线。
+- `references/storybook-docs.md` for Storybook, docs, interaction tests, accessibility tests, and visual review.
+- `references/governance.md` for ownership, semver, deprecation, migration, or component consolidation.
+- `references/forward-tests.md` only when validating or iterating on this skill.
 
-## 开始前确认
+## Intake
 
-- 当前仓库的 token 来源、主题机制和组件分层
-- 哪些组件属于基础层，哪些已经被业务耦合污染
-- 当前仓库真实可用的 Storybook、文档、测试和构建命令
-- 当前变更是否会破坏现有组件契约
+- Identify the token source of truth, output targets, theme mechanism, and naming conventions.
+- Identify which components are primitives, composed components, or product/business components.
+- Identify current documentation, Storybook, test, build, and package release commands.
+- Identify whether the change is additive, breaking, deprecated, or migration-only.
 
-## 统一工作流
+## Implementation Rules
 
-### 1. 先画清层级
+- Prefer semantic tokens for product meaning and component tokens only for real local mapping needs.
+- Model component APIs as stable contracts: variants, sizes, slots, state, events, controlled/uncontrolled behavior, refs, and accessibility ownership.
+- Do not add one-off props, tokens, or variants for a single page without a governance decision.
+- Keep docs, tests, and migration notes synchronized with the changed contract.
+- Do not keep duplicate components or token aliases indefinitely; record a deprecation or consolidation path.
 
-- 区分基础 token、语义 token、组件 token
-- 区分基础组件、组合组件和业务组件
-- 明确每个组件的职责边界和消费者
+## Delivery Requirements
 
-### 2. 再收敛契约
-
-- 组件 API 围绕意图和状态，不围绕临时样式参数
-- 把必要状态、变体、槽位和可访问性要求显式建模
-- 不要让同类组件长期分叉生长
-
-### 3. 最后落文档与治理
-
-- 为关键状态和变体补齐 stories 或等价文档
-- 记录设计决策、禁用用法和迁移方向
-- 如果决定破坏式调整，就在同一轮里统一迁移，不长期保留旧接口
-
-## 专题检查点
-
-- token 是否按语义分层，而不是直接暴露裸值
-- 组件输入输出是否稳定、简洁、可解释
-- 状态矩阵是否覆盖默认、禁用、错误、加载等真实场景
-- 文档是否能让调用方知道何时用、何时不用
-- 治理规则是否能阻止一次性分叉和样式漂移
-
-## 验证与交付要求
-
-- 说明本轮影响了哪些 token、组件契约或文档入口
-- 至少运行与改动范围匹配的真实文档、测试或构建命令
-- 如果存在未迁移完的调用方或未覆盖状态，要明确写出
+- State which tokens, component contracts, docs, tests, or migration paths changed.
+- State whether the change is breaking, additive, deprecated, or internal-only.
+- Report validation commands and any uncovered consumers, states, or theme outputs.

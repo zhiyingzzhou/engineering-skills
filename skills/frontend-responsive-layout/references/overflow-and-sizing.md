@@ -1,23 +1,31 @@
 # Overflow And Sizing
 
-本页规则以 MDN 尺寸与溢出治理实践为基线。
+Use this reference when content spills, clips, squashes, overlaps, or creates horizontal scrolling.
 
-## 常见根因
+## Common Causes
 
-- 子项默认最小宽度导致 flex 容器撑破
-- 固定宽高与真实内容不匹配
-- 长单词、代码、表格或文件名没有换行策略
-- 绝对定位、sticky 或 transform 让元素跑出视口
+- Flex/grid children keep their intrinsic minimum size and need `min-width: 0` or equivalent.
+- Long words, URLs, filenames, code, or table cells lack a wrapping or scrolling policy.
+- Fixed heights cannot contain translated text, zoomed text, validation errors, or dynamic content.
+- Absolute, sticky, transformed, or animated elements escape their intended containing block.
+- Viewport-height assumptions fail with mobile browser chrome or virtual keyboards.
 
-## 检查要点
+## Repair Rules
 
-- flex/grid 子项是否需要 `min-width: 0` 或等价约束
-- 媒体是否受 `max-width: 100%` 或容器约束保护
-- 长文本是否允许换行、截断或横向滚动容器
-- 系统缩放到 200% 时是否仍可完整操作
+- Fix the constraint chain near the source before applying global `overflow: hidden`.
+- Prefer flexible min/max constraints to fixed dimensions.
+- Give tables, code blocks, charts, and data grids a deliberate narrow-screen strategy.
+- Avoid hiding focus outlines or controls through clipping.
+- Consider `svh`, `dvh`, and `lvh` for mobile viewport-height problems.
 
-## 常见修正方向
+## Text
 
-- 优先修约束链，而不是简单全局 `overflow: hidden`
-- 让组件能在窄空间降级，而不是依赖裁切
-- 为表格、代码块和图表提供专门的窄屏策略
+- Allow wrapping for user-generated content.
+- Use truncation only when the full value is available through an accessible affordance.
+- Test long labels, translated text, and large text zoom.
+
+## Verification
+
+- Check no unexpected horizontal scrolling at narrow, medium, and wide sizes.
+- Check 200% zoom when text, controls, or fixed panels changed.
+- Check focus and hover states do not resize or shift the layout.

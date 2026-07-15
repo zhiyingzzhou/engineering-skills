@@ -1,68 +1,48 @@
 ---
 name: frontend-testing
-description: 当你需要为前端代码设计、补齐或审查测试时使用这个 skill。它聚焦测试分层、DOM 与交互测试、集成测试、E2E、稳定定位器和 flaky 治理，不负责性能 profiling、设计 token 建模或纯布局方案。
+description: Use this skill for frontend test strategy, implementation, remediation, or review when the task involves unit tests, DOM/component tests, integration tests, Playwright or browser E2E, Storybook tests, accessibility checks, visual snapshots, stable locators, async assertions, test isolation, mocking, fixtures, or flaky test diagnosis. Do not use it for performance profiling, design-token modeling, pure layout fixes, or form UX unless test coverage is the primary concern.
 ---
 
 # Frontend Testing Skill
 
-## 适用场景
+## Core Workflow
 
-这个 skill 用来处理前端测试相关工作，覆盖：
+1. Identify the highest-risk behavior and choose the cheapest test layer that can observe it honestly.
+2. Test user-visible behavior, not implementation details, unless the task is pure logic.
+3. Prefer semantic locators and web-first assertions; avoid class selectors, DOM-shape coupling, and fixed sleeps.
+4. Isolate data, storage, network, time, and external dependencies enough to make failures actionable.
+5. Run the smallest sufficient test set first, then broaden only when the risk surface justifies it.
 
-- 补齐组件、页面或流程测试
-- 调整测试分层和覆盖策略
-- 修复 flaky 测试
-- 审查测试质量和缺口
-- 为关键用户路径建立回归保护
+## Read References By Task
 
-## 先读什么
+Always read:
 
-按下面顺序读取：
+- `references/test-strategy.md`
+- `references/dom-testing.md`
 
-1. `references/test-strategy.md`
-2. `references/dom-testing.md`
-3. `references/e2e-best-practices.md`
-4. `references/review-checklist.md`
+Read only when relevant:
 
-这些 references 以 Testing Library 和 Playwright 的官方最佳实践为基线，并抽象为通用测试原则。
+- `references/e2e-best-practices.md` for Playwright, browser automation, locators, isolation, network, visual snapshots, and flaky tests.
+- `references/review-checklist.md` for PR reviews, coverage audits, or refactor risk analysis.
+- `references/forward-tests.md` only when validating or iterating on this skill.
 
-## 开始前确认
+## Intake
 
-- 当前仓库真实存在的测试层级、命令和工具链
-- 本轮改动最需要保护的是逻辑、组件、页面还是关键流程
-- flaky 问题来自数据、环境、选择器还是等待策略
-- 是否已有测试夹具、mock 约定或基础 helpers
+- Identify the behavior under risk and whether it is logic, rendering, interaction, routing, network, auth, permissions, browser behavior, or visual/a11y regression.
+- Identify the existing test tools, commands, helpers, fixtures, mocks, data seeding, and CI constraints.
+- Identify current flaky symptoms: selector failure, timing, shared state, network, animation, environment, or product behavior.
+- Identify whether coverage should be unit, DOM, integration, Storybook, accessibility, visual, or E2E.
 
-## 统一工作流
+## Implementation Rules
 
-### 1. 先选对测试层级
+- Use Testing Library role/name queries first, then label/text, and only then stable test IDs.
+- Use `getBy*`, `queryBy*`, and `findBy*` intentionally based on synchronous presence, absence, or async appearance.
+- Use user-level interactions and assertions on visible results, accessible state, URL changes, network outcomes, or persisted data.
+- In Playwright, use locators, auto-waiting, web-first assertions, per-test isolation, and controlled network/data setup.
+- Treat visual and accessibility checks as complementary layers, not replacements for behavior tests.
 
-- 纯逻辑放在最快层级验证
-- 组件交互优先用接近用户行为的 DOM 测试
-- 关键跨页面流程再用少量 E2E 兜底
+## Delivery Requirements
 
-### 2. 再写稳定测试
-
-- 断言用户可见结果，不盯内部实现细节
-- 选择器优先用角色、名称、文本或稳定语义
-- 不用固定睡眠时间掩盖时序问题
-
-### 3. 最后治理回归与波动
-
-- 只运行与改动范围匹配的最小充分测试集
-- 识别 flaky 根因，而不是无限重试
-- 把关键失败模式写进断言，而不是只测 happy path
-
-## 专题检查点
-
-- 测试分层是否和真实风险匹配
-- 断言是否描述用户结果，而不是实现过程
-- selector 是否稳定且可读
-- 成功、失败、空态、加载态是否都有覆盖
-- flaky 修复是否真的去掉了竞态，而不是延长等待
-
-## 验证与交付要求
-
-- 说明本轮新增或调整了哪些层级的测试
-- 至少运行与改动范围匹配的真实测试命令
-- 如果还有未覆盖路径或疑似环境性波动，要明确写出
+- State which test layer was added or changed and why that layer is sufficient.
+- Report commands run, failures observed, and any suspected environment-only issues.
+- Call out untested paths, intentionally mocked boundaries, and remaining flaky risk.

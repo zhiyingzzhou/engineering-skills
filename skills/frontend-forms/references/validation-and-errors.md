@@ -1,23 +1,32 @@
 # Validation And Errors
 
-本页规则以 web.dev 表单设计和错误反馈建议为基线。
+Use this reference when designing validation timing, field errors, server errors, summaries, and recovery behavior.
 
-## 校验时机
+## Timing
 
-- 先区分输入中提示、离开字段校验和提交时校验
-- 不要在用户首次聚焦前就显示错误
-- 轻量格式提示可以尽早给，阻断型错误应在合适时机出现
-- 服务端规则与客户端规则冲突时，以真实提交契约为准
+- Show static requirements before input.
+- Avoid blocking errors before the user has interacted with the field.
+- Validate after blur, after a meaningful pause, or on submit depending on cost and severity.
+- Treat server validation as authoritative when client and server disagree.
 
-## 错误反馈
+## Field Errors
 
-- 字段级错误应贴近字段，并说明怎么修
-- 提交失败时可补一个摘要，但不要取代字段级定位
-- 提交失败后优先把焦点带到首个需要处理的位置
-- 不要清空用户已输入的正确内容
+- Place field-level errors near the field and explain how to fix the issue.
+- Set `aria-invalid` only while the current value is invalid.
+- Link the active error message to the field description relationship.
+- Do not rely on color alone.
+- Preserve valid user-entered values after failure unless a security rule requires clearing them.
 
-## 成功与恢复
+## Error Summary
 
-- 成功反馈要明确下一步
-- 重复提交要有防抖或禁用策略
-- 网络失败与字段错误要区分文案和恢复方式
+- Use an error summary for multi-field or submit-blocking failures.
+- Focus the summary or the first invalid field after submit; choose the pattern that best supports the existing UI.
+- Summary links should move focus to the relevant field.
+- Keep server, network, permission, and field-format errors distinguishable.
+
+## Recovery
+
+- Prevent duplicate submit with disabled or pending state that remains understandable.
+- Announce successful submission and next step.
+- Allow retry after network failure without losing entered data.
+- Avoid live-region spam; focus blocking failures and use concise status for non-blocking updates.

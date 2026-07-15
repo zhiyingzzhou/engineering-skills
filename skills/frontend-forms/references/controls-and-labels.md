@@ -1,24 +1,32 @@
 # Controls And Labels
 
-本页规则以 web.dev Forms 和 MDN 原生表单语义为基线。
+Use this reference when selecting controls, labeling fields, grouping inputs, or reviewing form semantics.
 
-## 控件选择
+## Control Choice
 
-- 优先使用 `input`、`select`、`textarea`、`button`
-- 根据数据类型选择正确的 `type`、`inputmode` 和 `autocomplete`
-- 同组单选或复选使用 `fieldset` 和 `legend`
-- 提交动作保持真实 `submit` 语义
+- Use native `input`, `select`, `textarea`, and `button` before custom controls.
+- Choose `type`, `inputmode`, `autocomplete`, `min`, `max`, `step`, `pattern`, and `required` according to the data contract and user input reality.
+- Use a real submit button and form submission path unless the application has a documented reason not to.
+- Use `fieldset` and `legend` for grouped radio buttons, checkboxes, address segments, or multi-field concepts.
 
-## 标签与说明
+## Labels And Descriptions
 
-- 每个字段都应有可见标签
-- 辅助说明与错误信息应通过程序化关系关联到字段
-- 必填、可选、格式要求应在输入前可见
-- 占位符不是标签
+- Every field needs a programmatic label. Visible labels are preferred.
+- Placeholders can provide examples, not field identity.
+- Associate help text, format requirements, counters, and errors with the field through `aria-describedby` or native relationships.
+- Mark required and optional fields consistently before the user submits.
 
-## 常见修正方向
+## Field Contract Matrix
 
-- 把纯样式容器外层补上真实 `label`
-- 把“请输入”类占位符改成说明文本
-- 把字段组的标题从普通文本升级为 `legend`
-- 让按钮文案直接描述动作，而不是只写“确定”
+For every field, record:
+
+- Name and user-facing label.
+- Data type, allowed format, required/optional status, default value, and dependencies.
+- Client validation, server validation, normalization, and persisted value.
+- Autofill token, privacy sensitivity, and whether the field can be safely retained after failure.
+
+## Review Checks
+
+- Can the user understand what to enter before typing?
+- Can the field be completed with keyboard, screen reader, autofill, and mobile input?
+- Do grouped controls expose a real group name?

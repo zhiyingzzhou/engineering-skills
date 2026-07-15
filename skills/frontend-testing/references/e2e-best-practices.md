@@ -1,23 +1,35 @@
 # E2E Best Practices
 
-本页规则以 Playwright Best Practices 为基线，并抽象为通用浏览器自动化原则。
+Use this reference for Playwright or equivalent browser automation, locators, isolation, network behavior, screenshots, and flaky tests.
 
-## 稳定性原则
+## Locators And Assertions
 
-- 选择器优先基于可访问语义和稳定标识
-- 等待基于条件或断言，不用固定睡眠
-- 每个用例都应明确自己的前置状态
-- 共享环境和共享数据越少越稳定
+- Prefer role/name locators and stable user-facing selectors.
+- Use test IDs only when semantics cannot identify the target.
+- Avoid brittle CSS and XPath paths.
+- Use web-first assertions so the test waits for the expected UI condition.
+- Avoid fixed sleeps; wait for state, navigation, response, or visible result.
 
-## 审查要点
+## Isolation
 
-- 登录、种子数据和清理流程是否可靠
-- 是否把网络不稳定误判成页面缺陷
-- 断言是否足够具体，能定位失败原因
-- 是否只有真正关键的跨页面流程才进入 E2E
+- Each test should own its user, storage state, data seed, network assumptions, and cleanup.
+- Do not rely on test order.
+- Avoid shared mutable backend state unless it is explicitly reset.
+- Mock or stub third-party services when the test is not meant to verify the third party.
 
-## 常见修正方向
+## Network And Data
 
-- 把 CSS 路径选择器改成 role/name 或稳定测试标识
-- 把 `sleep` 改成等待页面状态、元素状态或网络条件
-- 把超长 happy path 拆成几个业务上独立的用例
+- Decide whether the test verifies real integration or UI behavior with controlled data.
+- Use route mocking for deterministic UI states: loading, success, empty, error, permission denied, and slow network.
+- Keep authentication setup explicit and fast.
+
+## Visual And Accessibility Layers
+
+- Use screenshots for visual regressions where layout/theme parity matters.
+- Freeze animations, dates, random data, and network content for visual snapshots.
+- Use accessibility scans as a fast safety net, but keep manual/semantic checks for behavior not detectable by tooling.
+
+## Flaky Diagnosis
+
+- Classify failures as selector, waiting, shared data, network, animation, browser, environment, or product regression.
+- Remove the cause before increasing retries.

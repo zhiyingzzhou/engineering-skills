@@ -1,25 +1,38 @@
 # Common Regressions
 
-## CLS 常见根因
+Use this reference to choose likely diagnostic paths after measurement.
 
-- 图片、广告、嵌入内容缺少稳定尺寸
-- 动态插入横幅、错误提示或推荐位
-- 字体切换导致文字回流
+## LCP
 
-## LCP 常见根因
+- Server or HTML response is slow.
+- LCP resource is discovered late through JavaScript, CSS, or client rendering.
+- LCP resource is downloaded late because of priority, competing resources, or lazy loading.
+- Element render is delayed by hydration, render-blocking CSS, font loading, or main-thread work.
 
-- Hero 图片或关键文本资源发现太晚
-- 首屏依赖被脚本、样式或第三方阻塞
-- 服务器响应或 HTML 生成过慢
+## INP
 
-## INP 常见根因
+- Event handler does long synchronous work.
+- Interaction triggers broad re-render, heavy layout, expensive selectors, or large state updates.
+- Main thread is busy with analytics, hydration, third-party code, or background work.
+- Visual feedback waits for data or non-critical work.
 
-- 事件处理里有长同步计算
-- 一次交互触发大范围重排或重渲染
-- 主线程被非关键逻辑长期占用
+## CLS
 
-## 修复顺序
+- Images, embeds, ads, charts, or video lack stable dimensions.
+- Late banners, errors, recommendations, consent prompts, or injected content push layout.
+- Font swap changes text metrics.
+- Skeletons or placeholders do not match final content size.
 
-- 先找出最大成本来源
-- 再减少关键路径上的等待
-- 最后把约束固化为预算或监控
+## Bundle And Dependency
+
+- Low-frequency features enter the initial chunk.
+- Dynamic import boundaries are too late or too broad.
+- A small UI change imports a large library.
+- Polyfills or legacy bundles are served to modern browsers unnecessarily.
+
+## Fix Order
+
+1. Confirm the metric and affected user path.
+2. Find the largest time, byte, or layout-shift contributor.
+3. Reduce critical work or reserve stable space.
+4. Add a guard if the repository has a reliable enforcement surface.

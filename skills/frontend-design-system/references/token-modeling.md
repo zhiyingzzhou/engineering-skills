@@ -1,21 +1,30 @@
 # Token Modeling
 
-本页规则以 Design Tokens Format Module 的分层思想为基线。
+Use this reference for token source-of-truth, naming, theming, aliasing, export pipelines, and reviews of hard-coded values.
 
-## 分层原则
+## DTCG-Oriented Shape
 
-- 基础 token 表达原始数值，如颜色、间距、字号
-- 语义 token 表达用途，如文本主色、危险背景、表面边框
-- 组件 token 只在组件确实需要局部映射时引入
+- Represent token values with explicit value and type concepts, such as `$value` and `$type`, in the source model or in the transform layer.
+- Use groups for shared metadata, but do not hide token meaning inside deeply nested paths.
+- Use aliases for semantic mapping, such as `color.text.default -> color.gray.900`, instead of duplicating raw values.
+- Detect circular aliases before export.
+- Mark deprecated tokens explicitly and provide replacements and migration expectations.
 
-## 命名原则
+## Layers
 
-- 优先按意义命名，不按十六进制或像素值命名
-- 主题切换优先通过别名映射，而不是复制一套组件样式
-- 同一语义不要在多个层级重复定义
+- Base tokens: raw palette, spacing scale, type scale, radii, shadows, motion, z-index, and breakpoints.
+- Semantic tokens: product meaning, such as text default, surface raised, border danger, action primary.
+- Component tokens: local mappings used only when a reusable component needs stable customization points.
 
-## 常见修正方向
+## Naming
 
-- 把直接写死的颜色和尺寸提升为 token
-- 把组件内部私有样式和全局语义区分开
-- 把“品牌色 500”与“主按钮背景”拆成不同层级
+- Name by purpose at semantic and component layers, not by hex value, pixel value, or one-off page usage.
+- Keep theme names out of consumer-facing component APIs where alias mapping can solve the problem.
+- Avoid defining the same semantic meaning at multiple layers.
+
+## Review Checks
+
+- Can every exported token trace back to a source token and theme mapping?
+- Are deprecated tokens still used by consumers?
+- Are token names stable enough for design, code, and documentation?
+- Do transforms preserve units, color spaces, composite values, and references correctly?

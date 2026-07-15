@@ -1,68 +1,48 @@
 ---
 name: frontend-responsive-layout
-description: 当你需要设计、修复或审查跨屏布局时使用这个 skill。它聚焦内容驱动断点、Flex 和 Grid 布局、尺寸约束、溢出治理、响应式图片与触控适配，不负责 Core Web Vitals 优化、表单校验或组件 API 设计。
+description: Use this skill for frontend responsive layout design, remediation, or review when the task involves viewport or container breakpoints, Flex/Grid sizing, overflow, wrapping, content-driven layout, responsive media, container queries, dynamic viewport units, safe areas, touch targets, virtual keyboards, orientation changes, zoom, or cross-device visual layout. Do not use it for Core Web Vitals profiling, form validation, component API governance, or accessibility semantics unless layout behavior is the primary concern.
 ---
 
 # Frontend Responsive Layout Skill
 
-## 适用场景
+## Core Workflow
 
-这个 skill 用来处理前端响应式布局相关工作，覆盖：
+1. Reproduce the layout issue at the smallest, largest, and one intermediate relevant size before editing.
+2. Identify whether the failure is caused by viewport assumptions, container assumptions, fixed dimensions, intrinsic content, media, positioning, or input modality.
+3. Fix constraints close to the source: grid/flex tracks, `min-width`, wrapping, aspect ratio, media sizing, safe area, or container query.
+4. Prefer content-driven breakpoints and container behavior over device-name breakpoints.
+5. Verify no horizontal overflow, content clipping, touch-target regression, image distortion, or layout shift across the agreed viewport matrix.
 
-- 页面在手机或平板上溢出、挤压、裁切
-- 跨断点布局重排
-- 组件容器尺寸约束与内容换行
-- 响应式图片和媒体适配
-- 触控与小屏交互审查
+## Read References By Task
 
-## 先读什么
+Always read:
 
-按下面顺序读取：
+- `references/layout-strategy.md`
+- `references/overflow-and-sizing.md`
 
-1. `references/layout-strategy.md`
-2. `references/overflow-and-sizing.md`
-3. `references/responsive-media.md`
-4. `references/device-checklist.md`
+Read only when relevant:
 
-这些 references 以 MDN 和 web.dev 的响应式设计建议为基线。
+- `references/responsive-media.md` for images, video, iframes, art direction, aspect ratio, and layout stability.
+- `references/device-checklist.md` for touch, orientation, virtual keyboard, safe area, zoom, reduced motion, and interaction modality.
+- `references/forward-tests.md` only when validating or iterating on this skill.
 
-## 开始前确认
+## Intake
 
-- 当前问题发生在哪些视口、设备方向或容器尺寸
-- 现有布局依赖的是 viewport、container 还是固定像素假设
-- 当前仓库真实可用的预览、截图、测试或构建命令
-- 是否已有设计 token、断点变量或布局基础组件
+- Identify the affected viewport widths, heights, containers, orientation, zoom level, and input modality.
+- Identify whether the layout depends on viewport media queries, container queries, fixed pixels, or design tokens.
+- Identify available preview, screenshot, visual regression, build, and device simulation commands.
+- Identify whether the change can affect content hierarchy, accessibility, LCP media, CLS, or form usability.
 
-## 统一工作流
+## Implementation Rules
 
-### 1. 先定位真实约束
+- Use `minmax()`, `clamp()`, flexible tracks, wrapping, and stable aspect ratios before adding more hard breakpoints.
+- Use `min-width: 0` or equivalent constraints when flex/grid children cause overflow.
+- Use container queries only after defining the containment context deliberately.
+- Use `srcset`, `sizes`, `picture`, stable dimensions, and non-lazy loading for critical media when appropriate.
+- Account for `svh`/`dvh`/`lvh`, safe areas, virtual keyboards, pointer/hover capabilities, and 200% zoom when relevant.
 
-- 找到是谁在撑宽、挤压或造成裁切
-- 区分页面级布局问题、组件级尺寸问题和媒体资源问题
-- 先确认问题是 viewport 触发还是容器触发
+## Delivery Requirements
 
-### 2. 再做内容驱动修正
-
-- 让布局围绕内容和可读性重排，而不是围绕设备型号硬编码
-- 优先调整尺寸约束、换行、栅格与媒体策略
-- 如果组件行为取决于容器而不是页面，优先考虑容器级方案
-
-### 3. 最后做跨尺寸回归
-
-- 至少验证窄屏、常规桌面和一个中间尺寸
-- 验证无横向滚动、无关键内容裁切、无误触热点
-- 如果布局修复影响图片尺寸，还要检查是否引入位移
-
-## 专题检查点
-
-- 断点围绕内容失真点建立，而不是围绕设备名册
-- 布局应优先允许伸缩、换行和重排，而不是固定宽高
-- 长文本、表格、代码块和媒体都要有溢出策略
-- 图片和嵌入内容要有稳定尺寸信息
-- 触控区域和安全区不能靠侥幸成立
-
-## 验证与交付要求
-
-- 说明本轮修了哪些断点、容器或溢出问题
-- 至少完成一次跨尺寸验证，最好基于仓库已有预览或测试命令
-- 如果未验证方向切换、系统缩放或触屏场景，要明确写出
+- State which constraints, containers, breakpoints, overflow paths, or media strategies changed.
+- Report viewport/device checks performed and whether they were simulated or real-device checks.
+- Call out unverified orientation, zoom, touch, keyboard, safe-area, or media loading scenarios.

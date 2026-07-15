@@ -1,21 +1,30 @@
 # Testing Review Checklist
 
-## 开始前
+Use this reference for PR reviews, test gap audits, and flaky test triage.
 
-- 确认真实测试命令和运行成本
-- 明确本轮改动的最高风险面
-- 找到已有 helper、fixture、mock 约定
+## Start
 
-## 最小检查集
+- Identify changed behavior and highest-risk failure modes.
+- Identify existing test layers, commands, fixtures, helpers, mocks, and CI cost.
+- Identify which paths are critical, high-traffic, revenue-sensitive, security-sensitive, or historically flaky.
 
-- 是否选对了测试层级
-- 断言是否描述用户结果
-- 成功、失败、空态、加载态是否被覆盖
-- 选择器和等待策略是否稳定
-- flaky 根因是否被真正消除
+## Coverage
 
-## 交付时必须说明
+- Happy path, error path, empty state, loading state, permission state, and recovery path are covered where relevant.
+- DOM tests query by user-observable semantics.
+- E2E tests cover only critical browser journeys or integration risks.
+- Visual and accessibility checks are present when UI regressions are likely.
+- Tests avoid implementation details unless testing pure logic.
 
-- 跑了哪些测试
-- 哪些风险仍未覆盖
-- 哪些失败更可能来自环境而非产品逻辑
+## Stability
+
+- No fixed sleeps for normal UI waiting.
+- Data setup and cleanup are owned by each test or fixture.
+- External services are controlled unless the test intentionally covers them.
+- Randomness, time, animation, and network are stable where visual or timing assertions matter.
+
+## Delivery
+
+- State which commands were run and what failed.
+- State remaining untested risks and why they were left out.
+- Distinguish product failures from environment or data failures.

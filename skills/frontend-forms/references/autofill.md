@@ -1,24 +1,34 @@
 # Autofill
 
-本页规则以 web.dev Autofill 建议为基线。
+Use this reference for sign-in, sign-up, password change, one-time code, checkout, address, payment, and profile forms.
 
-## 基础原则
+## General Rules
 
-- 为常见字段提供正确的 `autocomplete` token
-- 认证字段要兼容密码管理器和一次性验证码
-- 字段命名、顺序和分组尽量稳定
-- 不要用脚本阻断浏览器自动填充
+- Use stable field names, labels, order, and grouping so browsers and password managers can recognize the form.
+- Provide correct `autocomplete` tokens for common fields.
+- Do not block paste, autofill, password managers, or one-time-code insertion without a security requirement.
+- Do not rewrite field values before submit in a way that breaks browser or password-manager detection.
 
-## 常见字段
+## Authentication
 
-- 身份信息：`name`、`given-name`、`family-name`
-- 联系方式：`email`、`tel`
-- 地址：`street-address`、`address-level1`、`postal-code`
-- 认证：`username`、`current-password`、`new-password`、`one-time-code`
+- Use `username` for the account identifier.
+- Use `current-password` for sign-in and `new-password` for account creation or password reset.
+- Use `one-time-code` for OTP fields where supported.
+- Keep password visibility toggles keyboard-accessible and stateful.
 
-## 常见误区
+## Identity And Contact
 
-- 多个字段复用同一个错误 `autocomplete`
-- 为了样式把真实输入拆得过碎
-- 登录页不区分用户名和新密码场景
-- 提交前用脚本重写字段值导致密码管理器失效
+- Common tokens: `name`, `given-name`, `family-name`, `email`, `tel`, `organization`.
+- Do not split names unless the backend or locale requirement truly needs it.
+- Phone and postal formats vary by locale; avoid overly strict client patterns.
+
+## Address And Payment
+
+- Common address tokens: `street-address`, `address-line1`, `address-line2`, `address-level1`, `address-level2`, `postal-code`, `country`.
+- Use `shipping` and `billing` section prefixes when both appear in one flow.
+- Payment forms should preserve browser payment/autofill compatibility and avoid unnecessary custom entry widgets.
+
+## Verification
+
+- Test at least one modern browser autofill path when fields are changed.
+- Record unverified password manager, payment autofill, address autofill, and OTP behavior.

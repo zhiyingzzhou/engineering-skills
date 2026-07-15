@@ -1,81 +1,46 @@
-# 最佳实践
+# Best Practices
 
-## 一手来源优先
+Use this reference for reconstruction approach after permission and scope are clear.
 
-优先使用：
+## Source Priority
 
-- Chrome DevTools 官方文档
-- MDN
-- Playwright 官方文档
-- React / Tailwind / Router 等框架官方文档
+For owned or explicitly authorized targets:
 
-## 运行时真源优先
+1. Live runtime page.
+2. DevTools or browser runtime truth: DOM, computed styles, screenshots, accessibility tree, network, and state.
+3. Playwright captures and repeatable screenshot matrices.
+4. Source maps, bundles, compiled assets, API responses, and static resources when reuse is permitted.
+5. Saved HTML snapshots.
+6. Current local approximation.
 
-高保真复刻时，运行时页面优先于：
+For public third-party or unknown targets, use only non-copying analysis unless permission is clarified.
 
-- 保存页 HTML
-- 低保真截图
-- 主观记忆
-- 本地近似实现
+## Runtime Truth
 
-很多站点经过：
+- Runtime DOM beats saved HTML when hydration, theme branches, media queries, feature flags, or animation initialization are involved.
+- Computed styles beat class names for visual parity.
+- State captures beat memory: hover, active, focus, selected, expanded, open, loading, empty, and error states.
+- Screenshots should include first viewport, full page, section-level, mobile, and key interaction states.
 
-- SSR
-- hydration
-- 主题分支渲染
-- source map
-- 动画初始化
-- 媒体查询分支
+## Reconstruction Boundaries
 
-所以只看静态 HTML 往往不够。
+- Rebuild into maintainable route-specific sections and local components.
+- Keep shared primitives low-level.
+- Keep content sources separate from UI.
+- Do not inject raw saved HTML into the final render path.
+- Do not invent routes, claims, testimonials, pricing, logos, or product details.
 
-## 反编译时优先直取源码
+## Computed Style Checks
 
-如果能从这些位置直接恢复内容，就不要重写：
+Capture or compare:
 
-- source map
-- bundle
-- network response
-- 运行时 DOM
-- SVG path
-- 资源 URL
-- CSS token
-- 动画参数
+- Color, background, border, shadow, opacity, filter, transform.
+- Font family, size, weight, line height, spacing, and text wrapping.
+- Width, height, padding, margin, gap, grid/flex tracks, position, z-index, and overflow.
+- Transition duration, easing, delay, transform origin, and animation state.
 
-原则不是“写得像”，而是“尽量把真实实现抽出来再组件化落地”。
+## Guardrails
 
-## 用 computed style 核对状态
-
-核对 hover / active / focus / open 时，不只看 class，要看最终样式值：
-
-- `color`
-- `background-color`
-- `border-color`
-- `box-shadow`
-- `opacity`
-- `filter`
-- `transform`
-
-## 截图回归必须分层
-
-同时保留：
-
-- 首屏图
-- 整页图
-- section 图
-- 交互态图
-- 移动端图
-
-不要只看整页。
-
-## 官方来源
-
-- Chrome DevTools Inspect mode：`https://developer.chrome.com/docs/devtools/inspect-mode`
-- Chrome DevTools CSS reference：`https://developer.chrome.com/docs/devtools/css/reference`
-- Chrome DevTools source maps：`https://developer.chrome.com/docs/devtools/javascript/source-maps`
-- Chrome DevTools overrides：`https://developer.chrome.com/docs/devtools/overrides`
-- MDN `getComputedStyle()`：`https://developer.mozilla.org/en-US/docs/Web/API/Window/getComputedStyle`
-- Playwright screenshots：`https://playwright.dev/docs/screenshots`
-- Playwright visual comparisons：`https://playwright.dev/docs/test-snapshots`
-- React 状态结构：`https://react.dev/learn/choosing-the-state-structure`
-- Tailwind dark mode：`https://tailwindcss.com/docs/dark-mode`
+- If a mismatch may be animation timing, reload both pages and compare the same frame/state.
+- If an asset looks missing, check existence, path, filter, opacity, visibility, blend mode, and parent background.
+- If exact parity is requested, fix the largest visible mismatch first and keep a visible gap log.

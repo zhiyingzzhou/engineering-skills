@@ -1,4 +1,4 @@
 interface:
   display_name: "Site Reconstruction"
-  short_description: "Reverse-engineer internal sites 1:1 for testing"
-  default_prompt: "Use $site-reconstruction to reverse engineer this internal or company-owned site, detect available tooling, confirm the target stack, and rebuild it with pixel-accurate parity for white-box or black-box testing."
+  short_description: "Rebuild authorized sites with screenshot parity"
+  default_prompt: "Use $site-reconstruction to confirm authorization and scope, capture runtime truth from the permitted site, and rebuild it with maintainable components and screenshot-verified parity."

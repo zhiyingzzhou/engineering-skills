@@ -1,22 +1,27 @@
 # Test Strategy
 
-本页规则以 Testing Library 的用户视角原则和 Playwright 的关键路径实践为基线。
+Use this reference when choosing a test layer or reviewing coverage.
 
-## 分层原则
+## Layer Choice
 
-- 逻辑规则优先在最便宜、最快的层级验证
-- 组件交互优先验证可见 DOM 和用户行为
-- 跨页面、跨系统关键流程用少量 E2E 兜底
-- 不要把所有问题都推给最慢的 E2E
+- Unit: pure logic, validation rules, reducers, formatting, transforms, and permission decisions.
+- DOM/component: rendered UI, accessible names, user interactions, state changes, errors, loading, and component integration.
+- Storybook or equivalent: reusable component states, interaction demos, accessibility checks, and visual review.
+- Integration: routing, providers, data loading, caching, auth boundaries, and multi-component flows.
+- E2E/browser: critical user journeys, real browser behavior, permissions, downloads, cross-page flows, and high-risk regressions.
+- Visual snapshots: spacing, layout, theme, density, responsive states, and screenshot parity.
 
-## 选择标准
+## Principles
 
-- 如果风险在纯计算或状态变换，选单元层
-- 如果风险在渲染、可达性和交互反馈，选 DOM 层
-- 如果风险在路由、网络、权限或真实浏览器行为，选 E2E 层
+- Choose the cheapest layer that can observe the real risk.
+- Avoid duplicating the same assertion at every layer.
+- Mock only boundaries that are not the responsibility of the chosen layer.
+- Keep each test focused on one user-relevant behavior.
+- Include failure, empty, loading, permission, and recovery paths when they are part of the risk.
 
-## 编写原则
+## Review Checks
 
-- 一个测试只保护一个清晰行为
-- 测试命名应反映用户意图和预期结果
-- 只 mock 真正不属于本层责任的边界
+- Does the test fail for the bug it is meant to prevent?
+- Is the assertion about user-visible behavior or a stable public contract?
+- Is the setup deterministic and owned by the test?
+- Is the command cost appropriate for the protected risk?

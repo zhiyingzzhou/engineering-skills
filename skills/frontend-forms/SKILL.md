@@ -1,68 +1,50 @@
 ---
 name: frontend-forms
-description: 当你需要设计、实现、修复或审查表单体验时使用这个 skill。它聚焦原生控件、标签与说明、校验时机、错误反馈、自动填充、认证与结账类流程，不负责复杂 ARIA 组件模式、整体页面响应式布局或性能 profiling。
+description: Use this skill for frontend form design, implementation, remediation, or review when the task involves native controls, labels, descriptions, validation timing, field errors, error summaries, focus on submit, autofill, password managers, OTP, sign-in, checkout, address, payment, profile editing, privacy, or internationalized input. Do not use it for complex ARIA widgets, responsive page layout, performance profiling, or design-system API governance unless form behavior is the primary concern.
 ---
 
 # Frontend Forms Skill
 
-## 适用场景
+## Core Workflow
 
-这个 skill 用来处理前端表单相关工作，覆盖：
+1. Map the form contract: fields, groups, required/optional status, defaults, dependencies, submission target, success, client errors, server errors, and recovery paths.
+2. Choose native controls and browser capabilities first: correct `type`, `inputmode`, `autocomplete`, submit semantics, fieldsets, and labels.
+3. Design validation timing to reduce interruption: hint before input, validate after meaningful interaction, summarize blocking errors on submit.
+4. Preserve user work across failures and prevent duplicate submissions without breaking autofill or password managers.
+5. Verify success, field errors, server errors, autofill/password manager behavior, keyboard flow, and focus recovery.
 
-- 登录、注册、找回密码
-- 地址、支付、资料编辑等数据录入流程
-- 表单验证与错误提示
-- 自动填充和密码管理器兼容
-- 表单类 PR 审查
+## Read References By Task
 
-## 先读什么
+Always read:
 
-按下面顺序读取：
+- `references/controls-and-labels.md`
+- `references/validation-and-errors.md`
 
-1. `references/controls-and-labels.md`
-2. `references/validation-and-errors.md`
-3. `references/autofill.md`
-4. `references/form-review-checklist.md`
+Read only when relevant:
 
-这些 references 以 web.dev Forms 和 MDN 表单实践为基线。
+- `references/autofill.md` for sign-in, sign-up, password change, OTP, address, payment, and browser autofill behavior.
+- `references/security-and-i18n.md` for authentication, checkout, privacy, international addresses, names, phone numbers, or localized validation.
+- `references/form-review-checklist.md` for PR, page, or flow reviews.
+- `references/forward-tests.md` only when validating or iterating on this skill.
 
-## 开始前确认
+## Intake
 
-- 当前表单的目标任务、提交路径和失败语义
-- 现有字段是否已经映射到真实后端契约
-- 当前仓库真实可用的校验、测试和页面验证命令
-- 是否已有基础表单组件、统一错误样式或字段封装
+- Identify the user goal, submission API, backend validation contract, and post-submit destination.
+- Identify existing form components, validation libraries, error patterns, and field wrappers.
+- Identify whether the task includes authentication, payment, address, personal data, or regulated data.
+- Identify available unit, DOM, E2E, preview, and manual browser validation commands.
 
-## 统一工作流
+## Implementation Rules
 
-### 1. 先建立输入与提交流程事实
+- Every field needs a programmatic label; placeholders are hints, not labels.
+- Associate help, constraints, and errors with fields through real relationships.
+- Use `fieldset` and `legend` for related radio/checkbox groups and multi-field concepts.
+- Use `aria-invalid` only while the current field value is invalid, and keep error text discoverable.
+- Focus the first actionable error or error summary after a failed submit.
+- Never clear valid user input after failed validation unless security requires it, and explain that exception.
 
-- 列出字段、默认值、必填项、依赖关系和提交目标
-- 区分客户端即时反馈、提交时校验和服务端返回错误
-- 确认哪些字段应支持 autofill、密码管理器或一次性验证码
+## Delivery Requirements
 
-### 2. 再设计最小可靠交互
-
-- 优先使用原生输入类型和浏览器内建能力
-- 标签、说明、错误和必填提示必须能对应到字段
-- 不要在用户还没开始输入时就制造噪音错误
-
-### 3. 最后验证成功、失败和恢复路径
-
-- 验证成功提交、字段错误、服务端错误和重复提交保护
-- 验证焦点如何落到首个错误或错误摘要
-- 验证输入值在失败后是否被合理保留
-
-## 专题检查点
-
-- 原生控件优先，不要为普通输入重造组件
-- 每个字段都要有明确标签、说明和错误关联
-- 校验时机应减少打断，不制造过早惩罚
-- 认证和支付场景要优先兼容 autofill 与密码管理器
-- 错误反馈要指向下一步，而不是只显示失败
-
-## 验证与交付要求
-
-- 说明本轮改动涉及哪些字段契约、校验策略和错误语义
-- 至少运行与改动范围匹配的真实测试或页面级验证
-- 如果未验证 autofill、密码管理器或服务端错误路径，要明确写出
+- State which field contracts, validation timing, error semantics, autofill tokens, or privacy rules changed.
+- Report validation commands and manual browser checks performed.
+- Call out unverified password manager, autofill, OTP, payment, address, server-error, or locale paths.

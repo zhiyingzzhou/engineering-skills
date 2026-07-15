@@ -1,4 +1,4 @@
 interface:
   display_name: "Frontend Forms"
-  short_description: "Build and review labels, validation, errors, and autofill"
-  default_prompt: "Use $frontend-forms to inspect the current form flow in the repo or page, then improve controls, labels, validation timing, error handling, and autofill behavior."
+  short_description: "Improve labels, validation, errors, autofill, and privacy"
+  default_prompt: "Use $frontend-forms to inspect the current form flow, then improve native controls, labels, validation timing, error handling, autofill, password-manager behavior, and privacy-sensitive input."

@@ -1,24 +1,31 @@
 # Focus And Keyboard
 
-本页规则以 MDN 键盘可访问性建议和 WAI-ARIA APG 交互模式为基线。
+Use this reference when the task involves keyboard access, focus order, focus visibility, dialogs, overlays, composite widgets, dynamic content, or focus recovery.
 
-## 焦点规则
+## Keyboard Baseline
 
-- 焦点顺序应跟随 DOM 和视觉阅读顺序
-- 不要移除 focus 样式，除非提供同等可见替代
-- 所有可交互元素都必须能通过键盘到达
-- 不要制造键盘陷阱
+- Tab order should follow DOM order and the visual reading path unless a composite widget owns arrow-key navigation.
+- Every interactive element must be reachable, operable, and understandable with a keyboard.
+- Focus must remain visible in every theme, high contrast mode, and state.
+- Avoid positive `tabindex`. Use `tabindex="0"` sparingly and `tabindex="-1"` for managed focus targets.
+- Never create a keyboard trap. If focus is intentionally contained, provide a predictable close path.
 
-## 常见场景
+## Focus Movement
 
-- 对话框打开后把焦点放到可理解的位置，关闭后返回触发源
-- 下拉、菜单、标签页等复合控件要有一致的方向键语义
-- 可折叠区域和开关要支持 Enter 或 Space，并暴露展开状态
-- 动态插入内容时避免无预期抢焦点
+- Move focus after opening modals, drawers, menus, popovers, route-like panels, or blocking error summaries.
+- Return focus to the trigger or the next logical control after closing a layer.
+- Do not steal focus for passive updates, toast messages, non-blocking loading states, or decorative changes.
+- If content is removed, move focus to a stable nearby element instead of leaving focus lost on `body`.
 
-## 审查要点
+## Composite Widgets
 
-- Tab、Shift+Tab 是否能完整走通关键路径
-- Escape 是否在应关闭的场景生效
-- 焦点是否被遮挡、丢失或落到不可见区域
-- 焦点移动是否与视觉反馈一致
+- Use roving `tabindex` when DOM focus should move among items.
+- Use `aria-activedescendant` only when focus stays on a container/input and the active item is exposed through state.
+- Arrow keys must be consistent with the pattern and orientation.
+- Selection and focus are different. Auto-select on focus only when the pattern and latency make it safe.
+
+## Verification
+
+- Walk Tab, Shift+Tab, Enter, Space, Escape, arrow keys, Home/End, and typeahead where relevant.
+- Check focus visibility against light/dark themes and high contrast where available.
+- Check that animations, loading, route changes, and error states do not drop focus.

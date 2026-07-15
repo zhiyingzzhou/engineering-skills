@@ -1,24 +1,30 @@
 # Rendering And Assets
 
-本页规则以 web.dev 关键渲染路径优化建议为基线。
+Use this reference for critical rendering path, images, fonts, scripts, third-party code, and resource loading.
 
-## 热路径治理
+## LCP Path
 
-- 优先识别并加速首屏关键资源
-- 谨慎使用 preload，只提升真正关键的资源
-- 避免让大体积 JavaScript 阻塞首屏渲染
-- 第三方脚本默认视为可疑成本
+- Identify the LCP element and whether it is text, image, video poster, or background-like content.
+- Check time to first byte, resource discovery, resource load delay, resource load duration, and element render delay.
+- Do not lazy-load the likely LCP image.
+- Use preload or fetch priority only for truly critical resources.
 
-## 资源策略
+## JavaScript And Rendering
 
-- 图片按显示尺寸和密度提供资源
-- 字体使用可接受的加载策略，避免长期不可见文本
-- 代码拆分按路由或能力边界进行，不按文件随意切
-- 首屏外能力再考虑延迟加载
+- Keep non-critical JavaScript out of the initial path.
+- Split by route, interaction, or capability, not arbitrary file boundaries.
+- Watch hydration cost, long tasks, expensive event handlers, layout thrashing, and unnecessary re-renders.
+- Prefer reducing work over hiding it behind more loading UI.
 
-## 审查要点
+## Images And Fonts
 
-- 关键 CSS、字体、图片是否被晚发现
-- 是否引入了本可异步的重依赖
-- 是否把低频能力带入热路径
-- 是否为了优化单点指标牺牲了整体可维护性
+- Serve images close to rendered size and density.
+- Provide stable width/height or aspect-ratio to avoid layout shifts.
+- Choose font loading behavior intentionally and avoid long invisible text.
+- Remove unused font weights, scripts, and third-party tags from critical routes.
+
+## Third Parties
+
+- Treat third-party scripts as budgeted dependencies.
+- Load non-critical third parties after the main task path.
+- Document owner, purpose, cost, and removal criteria for expensive third-party code.

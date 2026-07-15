@@ -1,51 +1,28 @@
-# 页面类型与复刻重点
+# Site Archetypes
 
-## 营销站 / Landing
+Use this reference to prioritize capture and reconstruction by page type.
 
-重点：
+## Landing Or Marketing
 
-- hero / masthead
-- 品牌条
-- 功能段
-- 定价
-- FAQ
-- CTA / footer
+- Hero, navigation, brand strip, feature sections, proof, pricing, FAQ, CTA, footer.
+- Capture responsive hero composition, CTA states, motion, and image treatment.
 
-## 内容站 / 博客 / 文档站
+## Docs Or Content
 
-重点：
+- List page, detail page, typography scale, table of contents, code blocks, search, tags, pagination, and reading navigation.
+- Capture markdown/content rendering details and long-content behavior.
 
-- 列表页
-- 详情页排版节奏
-- 目录
-- 代码块
-- 标签 / 分页 / 阅读导航
+## Dashboard Or App
 
-## Dashboard / 应用站
+- Navigation shell, filters, tabs, tables, cards, charts, empty/loading/error states, modals, dropdowns, and permissions.
+- Capture dense states, sticky regions, responsive collapse, and keyboard/focus states.
 
-重点：
+## Ecommerce Or Catalog
 
-- 导航壳层
-- table / filter / tab / KPI 卡
-- dropdown / modal / loading / empty
-- 状态色
+- Product cards, image ratios, filters, sort, pricing, badges, promotions, detail page, cart, and checkout entry.
+- Capture hover, selected, unavailable, sale, and quantity states.
 
-## 电商 / 目录站
+## Auth Or Form Flow
 
-重点：
-
-- 商品卡
-- 图片比例
-- 筛选 / 排序
-- 价格与促销态
-- 详情页表单
-
-## 认证 / 表单流程
-
-重点：
-
-- 输入框
-- focus / error / disabled
-- 社交登录按钮
-- 密码切换
-- 次级操作链接
+- Input fields, labels, help text, errors, focus, disabled, loading, social login, password visibility, OTP, recovery links.
+- Coordinate with `frontend-forms` and `frontend-accessibility` when behavior matters.

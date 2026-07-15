@@ -1,68 +1,48 @@
 ---
 name: frontend-performance
-description: 当你需要测量、定位或优化前端性能时使用这个 skill。它聚焦 Core Web Vitals、关键渲染路径、资源优先级、代码拆分、性能预算与回归守卫，不负责通用可访问性整改、布局设计或测试分层。
+description: Use this skill for frontend performance measurement, diagnosis, optimization, or review when the task involves Core Web Vitals, LCP, INP, CLS, field data, lab data, critical rendering path, resource priority, JavaScript cost, code splitting, third-party scripts, performance budgets, profiling, or regression guards. Do not use it for generic accessibility, responsive layout design, form UX, or test coverage unless performance is the primary concern.
 ---
 
 # Frontend Performance Skill
 
-## 适用场景
+## Core Workflow
 
-这个 skill 用来处理前端性能相关工作，覆盖：
+1. Measure before editing. Record route, device class, network, browser, build mode, data source, and reproduction steps.
+2. Prefer field data for prioritization. Use lab tools to reproduce, isolate, and compare under controlled conditions.
+3. Classify the issue as loading, interaction, layout stability, rendering, JavaScript execution, network, server, or third-party cost.
+4. Fix the biggest user-visible bottleneck first and avoid trading maintainability for cosmetic score gains.
+5. Add a regression guard when the repository has an appropriate build, budget, analysis, monitoring, or CI surface.
 
-- LCP、INP、CLS 指标排查与优化
-- 首屏和关键路径资源治理
-- 包体积、懒加载和第三方脚本审查
-- 性能预算与回归守卫设计
-- 性能类 PR review
+## Read References By Task
 
-## 先读什么
+Always read:
 
-按下面顺序读取：
+- `references/measurement.md`
+- `references/common-regressions.md`
 
-1. `references/measurement.md`
-2. `references/rendering-and-assets.md`
-3. `references/budgets.md`
-4. `references/common-regressions.md`
+Read only when relevant:
 
-这些 references 以 web.dev Web Vitals 和 performance budgets 建议为基线。
+- `references/rendering-and-assets.md` for critical rendering path, images, fonts, script loading, third-party code, and resource priority.
+- `references/budgets.md` for budget design, CI gates, bundle analysis, or performance review thresholds.
+- `references/forward-tests.md` only when validating or iterating on this skill.
 
-## 开始前确认
+## Intake
 
-- 当前问题来自字段数据、实验室数据还是主观卡顿反馈
-- 受影响的是哪个页面、路由或交互链路
-- 当前仓库真实可用的 build、analyze、profile、test 或监控命令
-- 是否已有预算、埋点、资源清单或性能基线
+- Identify the affected page, route, interaction, user segment, and business-critical path.
+- Identify whether the evidence is RUM, CrUX, synthetic lab data, profiler traces, bundle analysis, or subjective feedback.
+- Identify existing build, analyze, Lighthouse, WebPageTest, profiler, monitoring, and test commands.
+- Identify current baselines, budgets, device assumptions, and release constraints.
 
-## 统一工作流
+## Implementation Rules
 
-### 1. 先测量，不先猜
+- Treat LCP, INP, and CLS as separate systems; do not assume a bundle-size change fixes all of them.
+- Compare like with like: same route, build mode, device class, network, viewport, and cache state.
+- Use p75 mobile and desktop field data where available; use lab data to explain and verify hypotheses.
+- Prioritize late-discovered LCP resources, long tasks and excessive re-rendering for INP, and missing dimensions or late insertion for CLS.
+- Keep performance budgets specific to routes, resources, interactions, or page types.
 
-- 先锁定页面、设备、网络和复现条件
-- 区分加载性能、交互性能和布局稳定性
-- 在改动前记录基线，避免“优化后更慢”却无证据
+## Delivery Requirements
 
-### 2. 再治理热路径
-
-- 先处理最影响体验的 LCP、INP、CLS 问题
-- 资源优先级、代码拆分和第三方脚本都要围绕关键路径权衡
-- 不要为了追指标引入更难维护的隐性复杂度
-
-### 3. 最后防回归
-
-- 用真实命令或现有监控验证指标变化
-- 如果仓库支持预算，把约束固化到构建或 CI
-- 记录本轮未覆盖的设备、页面或流量面
-
-## 专题检查点
-
-- LCP 先看关键资源是否晚发现、晚下载、晚渲染
-- INP 先看长任务、同步计算和大范围刷新
-- CLS 先看缺失尺寸、后插内容和字体位移
-- 性能优化必须回扣真实用户路径，而不是只看单一跑分
-- 预算要明确落在页面、资源或交互级别
-
-## 验证与交付要求
-
-- 说明本轮优化针对哪个指标、哪条链路、采用了什么测量方式
-- 至少运行与改动范围匹配的真实构建、分析或验证命令
-- 如果只做了实验室验证，没有字段或线上数据，要明确写出
+- State the metric, route, data source, baseline, change, and validation method.
+- Report commands run and whether results are field data, lab data, or local profiling only.
+- Record untested devices, routes, traffic segments, third-party dependencies, or monitoring gaps.
